@@ -6,7 +6,11 @@ A Command-line client for Strava.
 
 ## Requirements
 
+Sutro is a Go application and requires a Go development toolchain to be installed.
+
 Sutro requires users to provision an application on the Strava website. Please see [this page](http://developers.strava.com/docs/getting-started/#account) for details. Once you have an application, you will need its id and secret to authenticate.
+
+Finally, Sutro uses Go Swagger to generate the client code [installed](https://goswagger.io/install.html)
 
 ## Compiling
 
