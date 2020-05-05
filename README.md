@@ -6,7 +6,7 @@ A Command-line client for Strava.
 
 ## Requirements
 
-Sutro requires users to provision an application on the Strava website. Please see [this page](http://developers.strava.com/docs/getting-started/#account) for details. Once you 
+Sutro requires users to provision an application on the Strava website. Please see [this page](http://developers.strava.com/docs/getting-started/#account) for details. Once you have an application, you will need its id and secret to authenticate.
 
 ## Compiling
 
@@ -34,7 +34,12 @@ Use "sutro [command] --help" for more information about a command.
 Before you can execute any API calls in Sutro, you first need to provision an authentication token. You will need your application id and secret:
 
 ```sh
-$ ./sutro authenticate --client_id <client_id> --client_secret <client_secret> --authorization_url https://www.strava.com/oauth/authorize --token_url https://www.strava.com/oauth/token --scopes activity:read_all,activity:write,read_all,profile:read_all
+$ ./sutro authenticate \
+  --client_id <client_id> \
+  --client_secret <client_secret> \
+  --authorization_url https://www.strava.com/oauth/authorize \
+  --token_url https://www.strava.com/oauth/token \
+  --scopes activity:read_all,activity:write,read_all,profile:read_all
 ```
 
 The credentials, which include the application secret, will be stored in ~/.sutro. They will auto-refresh as needed, so you shouldn't need to run the authentication flow more than once. Once you've authenticated, you have access to the full API:
