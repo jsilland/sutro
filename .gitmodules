@@ -1,0 +1,3 @@
+[submodule "go-swagger-cli"]
+	path = go-swagger-cli
+	url = https://github.com/jsilland/go-swagger-cli
