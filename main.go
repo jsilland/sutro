@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 
 	runtimeClient "github.com/go-openapi/runtime/client"
@@ -15,7 +16,13 @@ import (
 
 //go:generate swagger generate client -f swagger.json -t . --template-dir=go-swagger-cli/templates --allow-template-override -C go-swagger-cli/config.yml
 
+type globalFlags struct {
+	verbose bool
+}
+
 func main() {
+	flags := globalFlags{}
+
 	ctx := context.Background()
 	bridge, err := config.NewDotFileConfiguration("sutro")
 
@@ -44,11 +51,18 @@ func main() {
 		apiClient := client.New(runtime, nil)
 
 		command = client.NewCommand(apiClient)
+
+		command.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+			if flags.verbose {
+				httpClient.Transport = &verboseTransport{httpClient.Transport}
+			}
+		}
 	}
 	command.AddCommand(authenticate.Command(ctx, bridge))
 
+	command.PersistentFlags().BoolVarP(&flags.verbose, "verbose", "v", false, "verbose output")
+
 	command.Use = "sutro"
-	// command.SilenceUsage = true
 	command.PersistentPostRunE = func(cmd *cobra.Command, args []string) error {
 		if cmd.Name() == "authenticate" {
 			return nil
@@ -60,7 +74,22 @@ func main() {
 	_, err = command.ExecuteC()
 
 	if err != nil {
-		fmt.Errorf(err.Error())
+		_ = fmt.Errorf(err.Error())
 		os.Exit(-3)
 	}
+}
+
+type verboseTransport struct {
+	http.RoundTripper
+}
+
+func (vt *verboseTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	fmt.Fprintf(os.Stdout, "%s %s\n", request.Method, request.URL.String())
+	for header, values := range request.Header {
+		for _, value := range values {
+			fmt.Fprintf(os.Stdout, "%s: %s\n", header, value)
+		}
+	}
+	response, err := vt.RoundTripper.RoundTrip(request)
+	return response, err
 }

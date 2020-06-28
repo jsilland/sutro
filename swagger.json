@@ -637,8 +637,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -704,8 +705,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -914,6 +916,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the activity.",
             "name": "id",
             "in": "path",
@@ -1116,8 +1119,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -1278,8 +1282,9 @@
         "parameters": [
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -1432,6 +1437,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the athlete.",
             "name": "id",
             "in": "path",
@@ -1439,8 +1445,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -1481,6 +1488,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the athlete. Must match the authenticated athlete.",
             "name": "id",
             "in": "path",
@@ -1514,6 +1522,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the club.",
             "name": "id",
             "in": "path",
@@ -1575,6 +1584,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the club.",
             "name": "id",
             "in": "path",
@@ -1582,8 +1592,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -1643,6 +1654,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the club.",
             "name": "id",
             "in": "path",
@@ -1650,8 +1662,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -1701,6 +1714,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the club.",
             "name": "id",
             "in": "path",
@@ -1708,8 +1722,9 @@
           },
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -1807,6 +1822,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the route.",
             "name": "id",
             "in": "path",
@@ -1840,6 +1856,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the route.",
             "name": "id",
             "in": "path",
@@ -1870,6 +1887,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the route.",
             "name": "id",
             "in": "path",
@@ -2000,6 +2018,7 @@
         "parameters": [
           {
             "type": "integer",
+            "format": "int64",
             "description": "The identifier of the running race.",
             "name": "id",
             "in": "path",
@@ -2022,9 +2041,121 @@
         }
       }
     },
+    "/segment_efforts": {
+      "get": {
+        "description": "Returns a set of the authenticated athlete's segment efforts for a given segment.  Requires subscription.",
+        "tags": [
+          "SegmentEfforts"
+        ],
+        "summary": "List Segment Efforts",
+        "operationId": "getEffortsBySegmentId",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "The identifier of the segment.",
+            "name": "segment_id",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 formatted date time.",
+            "name": "start_date_local",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 formatted date time.",
+            "name": "end_date_local",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 30,
+            "description": "Number of items per page. Defaults to 30.",
+            "name": "per_page",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of segment efforts.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/detailedSegmentEffort"
+              }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "achievements": [],
+                  "activity": {
+                    "id": 1234567890,
+                    "resource_state": 1
+                  },
+                  "athlete": {
+                    "id": 123445678689,
+                    "resource_state": 1
+                  },
+                  "average_watts": 220.2,
+                  "device_watts": false,
+                  "distance": 6148.92,
+                  "elapsed_time": 1657,
+                  "end_index": 1366,
+                  "id": 123456789,
+                  "kom_rank": null,
+                  "moving_time": 1642,
+                  "name": "Alpe d'Huez",
+                  "pr_rank": null,
+                  "resource_state": 2,
+                  "segment": {
+                    "activity_type": "Ride",
+                    "average_grade": 4.8,
+                    "city": "Le Bourg D'Oisans",
+                    "climb_category": 2,
+                    "country": "France",
+                    "distance": 6297.46,
+                    "elevation_high": 416,
+                    "elevation_low": 104.6,
+                    "end_latlng": [
+                      53.02204074375785,
+                      -3.2039630001245736
+                    ],
+                    "hazardous": false,
+                    "id": 788127,
+                    "maximum_grade": 16.3,
+                    "name": "Alpe d'Huez",
+                    "private": false,
+                    "resource_state": 2,
+                    "starred": false,
+                    "start_latlng": [
+                      52.98501000581467,
+                      -3.1869720001197366
+                    ],
+                    "state": "RA"
+                  },
+                  "start_date": "2007-09-15T08:15:29Z",
+                  "start_date_local": "2007-09-15T09:15:29Z",
+                  "start_index": 1102
+                }
+              ]
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/fault"
+            }
+          }
+        }
+      }
+    },
     "/segment_efforts/{id}": {
       "get": {
-        "description": "Returns a segment effort from an activity that is owned by the authenticated athlete.",
+        "description": "Returns a segment effort from an activity that is owned by the authenticated athlete. Requires subscription.",
         "tags": [
           "SegmentEfforts"
         ],
@@ -2308,8 +2439,9 @@
         "parameters": [
           {
             "type": "integer",
-            "description": "Page number.",
+            "description": "Page number. Defaults to 1.",
             "name": "page",
+            "default": 1,
             "in": "query"
           },
           {
@@ -2449,255 +2581,6 @@
                 "state": "CA",
                 "total_elevation_gain": 155.733,
                 "updated_at": "2018-02-15T09:04:18Z"
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error.",
-            "schema": {
-              "$ref": "#/definitions/fault"
-            }
-          }
-        }
-      }
-    },
-    "/segments/{id}/all_efforts": {
-      "get": {
-        "description": "Returns a set of the authenticated athlete's segment efforts for a given segment.",
-        "tags": [
-          "SegmentEfforts"
-        ],
-        "summary": "List Segment Efforts",
-        "operationId": "getEffortsBySegmentId",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "The identifier of the segment.",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "integer",
-            "description": "Page number.",
-            "name": "page",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "default": 30,
-            "description": "Number of items per page. Defaults to 30.",
-            "name": "per_page",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of segment efforts.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/detailedSegmentEffort"
-              }
-            },
-            "examples": {
-              "application/json": [
-                {
-                  "achievements": [],
-                  "activity": {
-                    "id": 1234567890,
-                    "resource_state": 1
-                  },
-                  "athlete": {
-                    "id": 123445678689,
-                    "resource_state": 1
-                  },
-                  "average_watts": 220.2,
-                  "device_watts": false,
-                  "distance": 6148.92,
-                  "elapsed_time": 1657,
-                  "end_index": 1366,
-                  "id": 123456789,
-                  "kom_rank": null,
-                  "moving_time": 1642,
-                  "name": "Alpe d'Huez",
-                  "pr_rank": null,
-                  "resource_state": 2,
-                  "segment": {
-                    "activity_type": "Ride",
-                    "average_grade": 4.8,
-                    "city": "Le Bourg D'Oisans",
-                    "climb_category": 2,
-                    "country": "France",
-                    "distance": 6297.46,
-                    "elevation_high": 416,
-                    "elevation_low": 104.6,
-                    "end_latlng": [
-                      53.02204074375785,
-                      -3.2039630001245736
-                    ],
-                    "hazardous": false,
-                    "id": 788127,
-                    "maximum_grade": 16.3,
-                    "name": "Alpe d'Huez",
-                    "private": false,
-                    "resource_state": 2,
-                    "starred": false,
-                    "start_latlng": [
-                      52.98501000581467,
-                      -3.1869720001197366
-                    ],
-                    "state": "RA"
-                  },
-                  "start_date": "2007-09-15T08:15:29Z",
-                  "start_date_local": "2007-09-15T09:15:29Z",
-                  "start_index": 1102
-                }
-              ]
-            }
-          },
-          "default": {
-            "description": "Unexpected error.",
-            "schema": {
-              "$ref": "#/definitions/fault"
-            }
-          }
-        }
-      }
-    },
-    "/segments/{id}/leaderboard": {
-      "get": {
-        "description": "Returns the specified segment leaderboard.",
-        "tags": [
-          "Segments"
-        ],
-        "summary": "Get Segment Leaderboard",
-        "operationId": "getLeaderboardBySegmentId",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "The identifier of the segment leaderboard.",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "enum": [
-              "M",
-              "F"
-            ],
-            "type": "string",
-            "description": "Filter by gender.",
-            "name": "gender",
-            "in": "query"
-          },
-          {
-            "enum": [
-              "0_19",
-              "20_24",
-              "25_34",
-              "35_44",
-              "45_54",
-              "55_64",
-              "65_69",
-              "70_74",
-              "75_plus"
-            ],
-            "type": "string",
-            "description": "Summit Feature. Filter by age group.",
-            "name": "age_group",
-            "in": "query"
-          },
-          {
-            "enum": [
-              "0_124",
-              "125_149",
-              "150_164",
-              "165_179",
-              "180_199",
-              "200_224",
-              "225_249",
-              "250_plus",
-              "0_54",
-              "55_64",
-              "65_74",
-              "75_84",
-              "85_94",
-              "95_104",
-              "105_114",
-              "115_plus"
-            ],
-            "type": "string",
-            "description": "Summit Feature. Filter by weight class.",
-            "name": "weight_class",
-            "in": "query"
-          },
-          {
-            "type": "boolean",
-            "description": "Filter by friends of the authenticated athlete.",
-            "name": "following",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "Filter by club.",
-            "name": "club_id",
-            "in": "query"
-          },
-          {
-            "enum": [
-              "this_year",
-              "this_month",
-              "this_week",
-              "today"
-            ],
-            "type": "string",
-            "description": "Filter by date range, will be in the athlete's timezone",
-            "name": "date_range",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "name": "context_entries",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "description": "Page number.",
-            "name": "page",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "default": 30,
-            "description": "Number of items per page. Defaults to 30.",
-            "name": "per_page",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Representation of a segment leaderboard.",
-            "schema": {
-              "$ref": "#/definitions/segmentLeaderboard"
-            },
-            "examples": {
-              "application/json": {
-                "effort_count": 30756,
-                "entries": [
-                  {
-                    "athlete_name": "Peter S.",
-                    "elapsed_time": 346,
-                    "moving_time": 346,
-                    "rank": 1,
-                    "start_date": "1993-04-03T15:37:43Z",
-                    "start_date_local": "1993-04-03T07:37:43Z"
-                  }
-                ],
-                "entry_count": 30756,
-                "kom_type": "kom"
               }
             }
           },
@@ -3826,7 +3709,8 @@
       "properties": {
         "id": {
           "description": "The unique identifier of the athlete",
-          "type": "integer"
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
@@ -3835,7 +3719,8 @@
       "properties": {
         "id": {
           "description": "The club's unique identifier.",
-          "type": "integer"
+          "type": "integer",
+          "format": "int64"
         },
         "name": {
           "description": "The club's name.",
@@ -3960,7 +3845,12 @@
         },
         "id": {
           "description": "The unique identifier of this route",
-          "type": "integer"
+          "type": "integer",
+          "format": "int64"
+        },
+        "id_str": {
+          "description": "The unique identifier of the route in string format",
+          "type": "string"
         },
         "map": {
           "$ref": "#/definitions/polylineMap"
@@ -4016,7 +3906,8 @@
         },
         "id": {
           "description": "The unique identifier of this race.",
-          "type": "integer"
+          "type": "integer",
+          "format": "int64"
         },
         "measurement_preference": {
           "description": "The unit system in which the race should be displayed.",
@@ -4034,7 +3925,8 @@
           "description": "The set of routes that cover this race's course.",
           "type": "array",
           "items": {
-            "type": "integer"
+            "type": "integer",
+            "format": "int64"
           }
         },
         "running_race_type": {
@@ -4057,70 +3949,6 @@
         "website_url": {
           "description": "The URL of this race's website.",
           "type": "string"
-        }
-      }
-    },
-    "segmentLeaderboard": {
-      "description": "A",
-      "type": "object",
-      "properties": {
-        "effort_count": {
-          "description": "Deprecated, use entry_count",
-          "type": "integer",
-          "example": "1993"
-        },
-        "entries": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/segmentLeaderboardEntry"
-          }
-        },
-        "entry_count": {
-          "description": "The total number of entries for this leaderboard",
-          "type": "integer",
-          "example": "1993"
-        },
-        "kom_type": {
-          "type": "string",
-          "enum": [
-            "kom",
-            "cr"
-          ]
-        }
-      }
-    },
-    "segmentLeaderboardEntry": {
-      "description": "A row in a segment leaderboard",
-      "type": "object",
-      "properties": {
-        "athlete_name": {
-          "description": "The public name of the athlete",
-          "type": "string",
-          "example": "P. Sagan"
-        },
-        "elapsed_time": {
-          "description": "The elapsed of the segment effort associated with this entry",
-          "type": "integer",
-          "example": "100"
-        },
-        "moving_time": {
-          "description": "The moving of the segment effort associated with this entry",
-          "type": "integer",
-          "example": "80"
-        },
-        "rank": {
-          "description": "The rank of this entry in the leaderboard",
-          "type": "integer"
-        },
-        "start_date": {
-          "description": "The time at which the effort was started.",
-          "type": "string",
-          "format": "date-time"
-        },
-        "start_date_local": {
-          "description": "The time at which the effort was started in the local timezone.",
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
@@ -4840,8 +4668,9 @@
   "parameters": {
     "page": {
       "type": "integer",
-      "description": "Page number.",
+      "description": "Page number. Defaults to 1.",
       "name": "page",
+      "default": 1,
       "in": "query"
     },
     "perPage": {
